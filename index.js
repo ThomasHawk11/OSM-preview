@@ -1,5 +1,3 @@
-<!-- exemple : ?address=Gare Saint Lazare -->
- 
 <!DOCTYPE html>
 <html>
 <head>
