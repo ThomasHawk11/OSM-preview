@@ -28,7 +28,7 @@
     if(addresses.length > 1){
       map = L.map('map').setView([46.6031, 1.8697], 6);
     }else{
-      map = L.map('map').setView([0,0], 15);
+      map = L.map('map');
     }
     
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
