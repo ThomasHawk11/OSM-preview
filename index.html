@@ -17,13 +17,11 @@
 
 <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
 <script>
-    // Fonction pour obtenir la valeur d'un paramètre de requête dans l'URL
     function getQueryParam(param) {
         const urlParams = new URLSearchParams(window.location.search);
         return urlParams.get(param);
     }
 
-    // Obtenez la liste des adresses à partir du paramètre 'addresses' de l'URL, ou utilisez une valeur par défaut
     var addresses = (getQueryParam('addresses') || "Paris").split(';');
 
     var map ;
@@ -38,7 +36,6 @@
         attribution: '© OpenStreetMap contributors'
     }).addTo(map);
 
-    // Utilisez Nominatim pour géocoder chaque adresse et placer un marqueur sur la carte
     addresses.forEach(function(address) {
         fetch('https://nominatim.openstreetmap.org/search?format=json&q=' + encodeURIComponent(address))
             .then(response => response.json())
