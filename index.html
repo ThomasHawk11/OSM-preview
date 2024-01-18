@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Map Preview</title>
+    <title>Leaflet Map Preview</title>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
@@ -17,64 +17,41 @@
 
 <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
 <script>
-
+    // Fonction pour obtenir la valeur d'un paramètre de requête dans l'URL
     function getQueryParam(param) {
         const urlParams = new URLSearchParams(window.location.search);
         return urlParams.get(param);
     }
 
-    // Check if 'addresses' parameter exists, if not, use 'address' parameter
-    var locationParameter = getQueryParam('addresses') || getQueryParam('address');
-    
-    // If 'addresses' parameter is present, use it to get multiple addresses
-    if (locationParameter) {
-        var addresses = locationParameter.split(';');
+    // Obtenez la liste des adresses à partir du paramètre 'addresses' de l'URL, ou utilisez une valeur par défaut
+    var addresses = (getQueryParam('addresses') || "Paris").split(';');
 
-        var map = L.map('map').setView([46.6031, 1.8697], 6);
+    var map;
+    if(addresses.length > 1){
+      map = L.map('map').setView([46.6031, 1.8697], 6);
+    }else{
+      map = L.map('map').setView([0,0], 1);
+    }
 
-        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-            attribution: '© OpenStreetMap contributors'
-        }).addTo(map);
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '© OpenStreetMap contributors'
+    }).addTo(map);
 
-        addresses.forEach(function(address) {
-            fetch('https://nominatim.openstreetmap.org/search?format=json&q=' + encodeURIComponent(address))
-                .then(response => response.json())
-                .then(data => {
-                    if (data && data.length > 0) {
-                        var result = data[0];
-                        var latlng = [result.lat, result.lon];
-                        map.setView(latlng, 15);
-                        L.marker(latlng).addTo(map).bindPopup(address);
-                    } else {
-                        console.error("No results found for the specified address:", address);
-                    }
-                })
-                .catch(error => console.error("Error in Nominatim request:", error));
-        });
-    } else {
-        // If 'address' parameter is present, use it to get a single address
-        var singleAddress = getQueryParam('address') || "Paris, France";
-
-        var map = L.map('map').setView([0, 0], 2);
-
-        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-            attribution: '© OpenStreetMap contributors'
-        }).addTo(map);
-
-        fetch('https://nominatim.openstreetmap.org/search?format=json&q=' + encodeURIComponent(singleAddress))
+    // Utilisez Nominatim pour géocoder chaque adresse et placer un marqueur sur la carte
+    addresses.forEach(function(address) {
+        fetch('https://nominatim.openstreetmap.org/search?format=json&q=' + encodeURIComponent(address))
             .then(response => response.json())
             .then(data => {
                 if (data && data.length > 0) {
                     var result = data[0];
                     var latlng = [result.lat, result.lon];
-                    map.setView(latlng, 15);
-                    L.marker(latlng).addTo(map);
+                    L.marker(latlng).addTo(map).bindPopup(address);
                 } else {
-                    console.error("No results found for the specified address.");
+                    console.error("Aucun résultat trouvé pour l'adresse spécifiée:", address);
                 }
             })
-            .catch(error => console.error("Error in Nominatim request:", error));
-    }
+            .catch(error => console.error("Erreur lors de la requête Nominatim:", error));
+    });
 </script>
 
 </body>
