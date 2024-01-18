@@ -23,27 +23,58 @@
         return urlParams.get(param);
     }
 
-    var address = getQueryParam('address') || "Paris, France";
+    // Check if 'addresses' parameter exists, if not, use 'address' parameter
+    var locationParameter = getQueryParam('addresses') || getQueryParam('address');
+    
+    // If 'addresses' parameter is present, use it to get multiple addresses
+    if (locationParameter) {
+        var addresses = locationParameter.split(';');
 
-    var map = L.map('map').setView([0, 0], 2);
+        var map = L.map('map').setView([0, 0], 2);
 
-    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-        attribution: '© OpenStreetMap contributors'
-    }).addTo(map);
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '© OpenStreetMap contributors'
+        }).addTo(map);
 
-    fetch('https://nominatim.openstreetmap.org/search?format=json&q=' + encodeURIComponent(address))
-        .then(response => response.json())
-        .then(data => {
-            if (data && data.length > 0) {
-                var result = data[0];
-                var latlng = [result.lat, result.lon];
-                map.setView(latlng, 15);
-                L.marker(latlng).addTo(map);
-            } else {
-                console.error("Aucun résultat trouvé pour l'adresse spécifiée.");
-            }
-        })
-        .catch(error => console.error("Erreur lors de la requête Nominatim:", error));
+        addresses.forEach(function(address) {
+            fetch('https://nominatim.openstreetmap.org/search?format=json&q=' + encodeURIComponent(address))
+                .then(response => response.json())
+                .then(data => {
+                    if (data && data.length > 0) {
+                        var result = data[0];
+                        var latlng = [result.lat, result.lon];
+                        map.setView(latlng, 15);
+                        L.marker(latlng).addTo(map).bindPopup(address);
+                    } else {
+                        console.error("No results found for the specified address:", address);
+                    }
+                })
+                .catch(error => console.error("Error in Nominatim request:", error));
+        });
+    } else {
+        // If 'address' parameter is present, use it to get a single address
+        var singleAddress = getQueryParam('address') || "Paris, France";
+
+        var map = L.map('map').setView([0, 0], 2);
+
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '© OpenStreetMap contributors'
+        }).addTo(map);
+
+        fetch('https://nominatim.openstreetmap.org/search?format=json&q=' + encodeURIComponent(singleAddress))
+            .then(response => response.json())
+            .then(data => {
+                if (data && data.length > 0) {
+                    var result = data[0];
+                    var latlng = [result.lat, result.lon];
+                    map.setView(latlng, 15);
+                    L.marker(latlng).addTo(map);
+                } else {
+                    console.error("No results found for the specified address.");
+                }
+            })
+            .catch(error => console.error("Error in Nominatim request:", error));
+    }
 </script>
 
 </body>
