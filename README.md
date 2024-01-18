@@ -1,26 +1,12 @@
 # OSM-preview
 
-## Aperçu adresse unique
-
-Template
+## URL
 ```
-https://thomashawk11.github.io/OSM-preview/?address=YOUR_ADDRESS
+https://thomashawk11.github.io/OSM-preview/?addresses=ADDRESS_1;ADDRESS_2;ADDRESS_3
 ```
 
-Par exemple
+## Par exemple
 ```
-https://thomashawk11.github.io/OSM-preview/?address=Gare Saint Lazare, Paris, France
+https://thomashawk11.github.io/OSM-preview/?addresses=Quai%20Vendeuvre
+https://thomashawk11.github.io/OSM-preview/?addresses=Rue écuyère, Caen;Rue de la paix, Paris
 ```
-
-## Aperçu adresses multiples
-
-Template
-```
-https://thomashawk11.github.io/OSM-preview/multiple?addresses=ADDRESS_1,ADDRESS_2,ADDRESS_3
-```
-
-Par exemple
-```
-https://thomashawk11.github.io/OSM-preview/multiple?addresses=Paris;Caen;Marseille
-```
-
