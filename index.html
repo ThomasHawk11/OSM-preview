@@ -25,9 +25,14 @@
 
     // Obtenez la liste des adresses à partir du paramètre 'addresses' de l'URL, ou utilisez une valeur par défaut
     var addresses = (getQueryParam('addresses') || "Paris").split(';');
-    var map = L.map('map').setView([46.6031, 1.8697], 6);
 
-
+    var map ;
+    if(addresses.length > 1){
+      map = L.map('map').setView([46.6031, 1.8697], 6);
+    }else{
+      map = L.map('map').setView([0,0], 1);
+    }
+    
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
         attribution: '© OpenStreetMap contributors'
     }).addTo(map);
