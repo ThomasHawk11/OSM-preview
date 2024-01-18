@@ -7,7 +7,7 @@ Template
 https://thomashawk11.github.io/OSM-preview/?address=YOUR_ADDRESS
 ```
 
-For example
+Par exemple
 ```
 https://thomashawk11.github.io/OSM-preview/?address=Gare Saint Lazare, Paris, France
 ```
@@ -16,11 +16,11 @@ https://thomashawk11.github.io/OSM-preview/?address=Gare Saint Lazare, Paris, Fr
 
 Template
 ```
-https://thomashawk11.github.io/OSM-preview/multiple.html?address=ADDRESS_1,ADDRESS_2,ADDRESS_3
+https://thomashawk11.github.io/OSM-preview/multiple?addresses=ADDRESS_1,ADDRESS_2,ADDRESS_3
 ```
 
-For example
+Par exemple
 ```
-https://thomashawk11.github.io/OSM-preview/multiple.html?address=Paris;Caen;Grenoble
+https://thomashawk11.github.io/OSM-preview/multiple?addresses=Paris;Caen;Marseille
 ```
 
