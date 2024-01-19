@@ -45,6 +45,7 @@
                     L.marker(latlng).addTo(map).bindPopup(address);
                     if (addresses.length === 1)
                         map.setView(latlng, 15);
+                        marker.openPopup();
                 } else {
                     console.error("Aucun résultat trouvé pour l'adresse spécifiée:", address);
                 }
