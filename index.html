@@ -43,9 +43,10 @@
                     var result = data[0];
                     var latlng = [result.lat, result.lon];
                     L.marker(latlng).addTo(map).bindPopup(address);
-                    if (addresses.length === 1)
-                        map.setView(latlng, 15);
+                    if (addresses.length === 1){
                         marker.openPopup();
+                        map.setView(latlng, 15);
+                    }
                 } else {
                     console.error("Aucun résultat trouvé pour l'adresse spécifiée:", address);
                 }
