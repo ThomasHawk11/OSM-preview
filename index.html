@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>OSM Preview</title>
+    <title>Map Preview</title>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
@@ -30,7 +30,7 @@
     }else{
       map = L.map('map');
     }
-
+    
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
         attribution: '© OpenStreetMap contributors'
     }).addTo(map);
@@ -43,10 +43,8 @@
                     var result = data[0];
                     var latlng = [result.lat, result.lon];
                     L.marker(latlng).addTo(map).bindPopup(address);
-                    if (addresses.length === 1){
-                        marker.openPopup();
+                    if (addresses.length === 1)
                         map.setView(latlng, 15);
-                    }
                 } else {
                     console.error("Aucun résultat trouvé pour l'adresse spécifiée:", address);
                 }
