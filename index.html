@@ -80,9 +80,7 @@
       map = L.map('map');
     }
     
-    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-        attribution: '© OpenStreetMap contributors'
-    }).addTo(map);
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {}).addTo(map);
 
     addresses.forEach(function(address) {
         fetch('https://nominatim.openstreetmap.org/search?format=json&q=' + encodeURIComponent(address))
