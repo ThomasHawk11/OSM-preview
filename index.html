@@ -21,51 +21,36 @@
         const urlParams = new URLSearchParams(window.location.search);
         return urlParams.get(param);
     }
-
     var addresses = (getQueryParam('addresses') || "Paris").split(';');
-    var map;
+    var map ;
 
     console.log(addresses);
-    if (addresses.length > 1) {
-        map = L.map('map').setView([46.6031, 1.8697], 6);
-    } else {
-        map = L.map('map');
+    if(addresses.length > 1){
+      map = L.map('map').setView([46.6031, 1.8697], 6);
+    }else{
+      map = L.map('map');
     }
-
+    
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
         attribution: '© OpenStreetMap contributors'
     }).addTo(map);
 
-    // Array to store all the promises
-    var promises = addresses.map(function (address) {
-        return fetch('https://nominatim.openstreetmap.org/search?format=json&q=' + encodeURIComponent(address))
+    addresses.forEach(function(address) {
+        fetch('https://nominatim.openstreetmap.org/search?format=json&q=' + encodeURIComponent(address))
             .then(response => response.json())
             .then(data => {
                 if (data && data.length > 0) {
                     var result = data[0];
-                    return [result.lat, result.lon, address];
+                    var latlng = [result.lat, result.lon];
+                    L.marker(latlng).addTo(map).bindPopup(address);
+                    if (addresses.length === 1)
+                        map.setView(latlng, 15);
                 } else {
                     console.error("Aucun résultat trouvé pour l'adresse spécifiée:", address);
-                    return null;
                 }
             })
-            .catch(error => {
-                console.error("Erreur lors de la requête Nominatim:", error);
-                return null;
-            });
+            .catch(error => console.error("Erreur lors de la requête Nominatim:", error));
     });
-
-    // Wait for all promises to resolve
-    Promise.all(promises)
-        .then(locations => {
-            locations = locations.filter(loc => loc !== null); // Remove null values
-            locations.forEach(loc => {
-                var latlng = [loc[0], loc[1]];
-                L.marker(latlng).addTo(map).bindPopup(loc[2]);
-                if (addresses.length === 1)
-                    map.setView(latlng, 15);
-            });
-        });
 </script>
 
 </body>
